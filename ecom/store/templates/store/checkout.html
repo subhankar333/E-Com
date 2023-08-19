@@ -1,0 +1,58 @@
+{% extends 'store/base.html' %}
+
+{% block body %}
+
+<div class="p-5 flex justify-center items-center shadow-lg">
+    <h1 class="font-bold text-xl justify-center items-center">Your Order Summary</h1>
+ </div>
+
+ <div class="pt-10 flex-col text-center font-bold">
+    <h2 class="text-xl">Total Price : <span class="text-green-700">{{total_price}}</span></h2>
+    
+</div>
+
+
+   {% for item in cartitems %}
+
+
+
+   <div class="product shadow-lg w-1/4 h-auto rounded-lg m-20">
+    <div class="product-image max-w-xl">
+        <img src="{{item.product.image}}" alt="">
+    </div>
+    <div class="p-5">
+        <div class="font-bold">
+            {{item.product.name}}
+        </div>
+        <div class="font-semibold">
+            {{item.product.description}}
+        </div>
+        <div class="text-green-700 font-bold">
+            Price : ₹{{item.product.price}}
+        </div> 
+        <div class="text-green-700 font-bold">
+            Rating : ☆{{item.product.rating}}
+        </div>
+      </div>
+
+      </div>
+       
+
+
+
+
+
+
+   {% endfor %}
+
+
+   
+
+
+
+
+
+
+
+
+{% endblock %}

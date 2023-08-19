@@ -1,0 +1,47 @@
+{% extends 'store/base.html' %}
+
+{% block body %}
+
+
+    <div class="product shadow-lg w-1/2 h-auto rounded-lg m-20">
+        <div class="product-image max-w-xl">
+            <img src="{{product_obj.image}}" alt="">
+        </div>
+        <div class="p-5">
+            <div class="font-bold">
+                {{product_obj.name}}
+            </div>
+            <div class="font-semibold">
+                {{product_obj.description}}
+            </div>
+            <div class="text-green-700 font-bold">
+                Price : ₹{{product_obj.price}}
+            </div> 
+            <div class="text-green-700 font-bold">
+                Rating : ☆{{product_obj.rating}}
+            </div>
+
+            <form action="{% url 'add_to_wishlist' %}" method="post">
+
+            {% csrf_token %}
+            <input type="hidden" name="product_obj-id" value="{{product_obj.id}}">
+            <input type="submit" class="btn bg-red-900 text-white font-semibold py-2 px-4 mt-3 rounded items-center add_wishlist" value="Add to wishlist">
+
+            </form>
+
+
+            <form action="{% url 'add_to_cart' %}" method="post">
+
+                {% csrf_token %}
+                <input type="hidden" name="product-id" value="{{product_obj.id}}">
+                <input type="submit" class="btn bg-red-900 text-white font-semibold py-2 px-4 mt-3 rounded items-center" value="Add to cart">
+    
+            </form>
+
+            
+        </div>
+    </div>
+
+
+{% endblock %}
+

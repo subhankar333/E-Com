@@ -1,0 +1,75 @@
+
+{% extends 'store/base.html' %}
+
+{% block body %}
+
+
+
+
+ <div class="p-5 flex justify-center items-center shadow-lg">
+    <h1 class="font-bold text-xl justify-center items-center">Your Cart</h1>
+ </div>
+  
+  
+  {% for item in cart_items %}
+      
+  <div class="product shadow-lg w-1/4 h-auto rounded-lg m-20">
+    <div class="product-image max-w-xl">
+        <img src="{{item.product.image}}" alt="">
+    </div>
+    <div class="p-5">
+        <div class="font-bold">
+            {{item.product.name}}
+        </div>
+        <div class="font-semibold">
+            {{item.product.description}}
+        </div>
+        <div class="text-green-700 font-bold">
+            Price : ₹{{item.product.price}}
+        </div> 
+        <div class="text-green-700 font-bold">
+            Rating : ☆{{item.product.rating}}
+        </div>
+
+    
+        <div class="font-bold quantity buttons_added">
+                <form action="" method="get">
+                    {% csrf_token %}
+                    <input type="button" value="-" class="minus btn btn-rounded-lg bg-red-900 py-2 px-3">
+                    <input type="button" step="1" min="1" max="" name="quantity" value="1"  class="form-control input-text qty btn px-12 text-center" >
+                    <input type="button" value="+" class="plus btn bg-green-900 py-2 px-3">
+                </form>
+                
+            
+        </div>
+
+          <form action="{% url 'remove_from_cart' %}" method="post">
+
+            {% csrf_token %}
+            <input type="hidden" name="item-id" value="{{item.id}}">
+            <input type="submit" class="btn bg-red-900 text-white font-semibold py-2 px-4 mt-3 rounded flex flex-col justify-center items-center" value="Remove from cart">
+
+            </form>
+
+        
+    </div>
+
+</div>
+
+  
+
+
+
+{% endfor %}
+
+
+
+<div class="m-auto flex-col w-1/6 pb-40">
+    <a href="{% url 'checkout' %}"><button class="bg-green-500 px-2 py-2 text-white shadow-lg rounded-lg" type="submit">Checkout</button></a>
+</div>
+
+
+
+
+{% endblock %}
+

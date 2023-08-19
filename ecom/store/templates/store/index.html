@@ -1,0 +1,42 @@
+{% extends 'store/base.html' %}
+
+
+{% block body %}
+
+<div class="product-container flex grid grid-cols-4">
+ 
+    {% for product in products %}
+   
+       <div class="product shadow-lg w-1/2 rounded-lg m-8">
+           <div class="product-image max-w-s h-auto object-contain">
+               <img src="{{product.image}}" alt="">
+           </div>
+           <div class="p-5">
+               <div class="font-bold">
+                   {{product.name}}
+               </div>
+               <div class="font-semibold">
+                   {{product.description}}
+               </div>
+               <div class="text-green-700 font-bold">
+                   ₹{{product.price}}
+               </div> 
+                <div class="text-green-700 font-bold">
+                ☆{{product.rating}}
+              </div>
+              <div class="px-7">
+                <a href="{% url 'view_product' product.id %}"><button class="bg-blue-900 text-white font-bold py-2 px-4 mt-3 rounded items-center">View</button></a>
+              </div>
+           </div>
+       </div>
+     
+    {% endfor %}
+   
+   </div>
+
+
+
+
+
+
+{% endblock %}
