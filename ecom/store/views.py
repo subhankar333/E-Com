@@ -3,6 +3,7 @@ from .models import Product,Wishlist,Cart,carti
 from .forms import UserRegistrationForm
 from django.http import JsonResponse
 from django.views.generic.base import TemplateView
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -10,9 +11,11 @@ def index(request):
     products = Product.objects.all()
     return render(request,'store/index.html',{'products':products})
 
+
 def view_product(request,id):
     product_obj = Product.objects.get(id=id)
     return render(request,'store/view_product.html',{'product_obj':product_obj})
+
 
 def register(request):
     if request.method == 'POST':
@@ -24,16 +27,16 @@ def register(request):
     user_form = UserRegistrationForm()
     return render(request,'store/register.html',{'user_form':user_form})
 
+
 def wishlist(request):
     wish_items = Wishlist.objects.filter(user=request.user)
     return render(request,'store/wishlist.html',{'wish_items':wish_items})
+
 
 def add_to_wishlist(request):
     if request.method == 'POST':
         product_id = request.POST.get('product_obj-id')
         product_item = Product.objects.get(id=product_id)
-        
-
         try:
             wish_item = Wishlist.objects.get(user=request.user,product=product_item)
             if wish_item:
@@ -45,7 +48,6 @@ def add_to_wishlist(request):
                return redirect('wishlist')
           
 
-
 def remove_from_wishlist(request):
     if request.method == 'POST':
        item_id = request.POST.get('item-id')
@@ -56,7 +58,7 @@ def remove_from_wishlist(request):
 def cart(request):
     cart_items = Cart.objects.filter(user=request.user)
     return render(request,'store/cart.html',{'cart_items':cart_items})
-
+   
     
 def add_to_cart(request):
     if request.method == 'POST':
@@ -74,13 +76,13 @@ def add_to_cart(request):
                return redirect('cart')
         
 
-
 def remove_from_cart(request):
     if request.method == 'POST':
        item_id = request.POST.get('item-id')
        Cart.objects.filter(id=item_id).delete()
        return redirect('cart')
     
+
 def checkout(request):
     cartitems = Cart.objects.filter(user=request.user)
     product_qty = request.GET.get('quantity')
