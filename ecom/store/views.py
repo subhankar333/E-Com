@@ -17,6 +17,14 @@ def view_product(request,id):
     return render(request,'store/view_product.html',{'product_obj':product_obj})
 
 
+def product_decrement(request):
+    print("Hello World!")
+    return HttpResponse("write Your Code ")
+
+
+def product_increment(request):
+    return HttpResponse("write your code")
+
 def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)

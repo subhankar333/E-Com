@@ -1,4 +1,3 @@
-
 {% extends 'store/base.html' %}
 
 {% block body %}
@@ -30,14 +29,15 @@
         <div class="text-green-700 font-bold">
             Rating : ☆{{item.product.rating}}
         </div>    
-        <div class="font-bold quantity buttons_added">
-            <form action="" method="get">
+        <div class="font-bold quantity buttons_added" style="display: flex; flex-direction: row;">
+            <form action="/product_decrement/" method="post">
                 {% csrf_token %}
-                <div class="box">
-                    <button>-</button>
-                    <input type="text" name="quantity" value="{{item.product.price}}">
-                    <button style="margin-right:center;">+</button>
-                </div>
+                <button>-</button>
+            </form>
+            <input type="text" name="quantity" style="text-align: center;" disabled="true" value="{{item.product_quantity}}">
+            <form action="/product_increment/" method="post">
+                {% csrf_token %}
+                <button>+</button>
             </form>
         </div>
 
@@ -53,7 +53,11 @@
 </div>
 
   
-
+<script>
+    console.log(item)
+    // let product_quantity=item.product_quantity
+    // console.log(product_quantity)
+</script>
 
 
 {% endfor %}
@@ -68,4 +72,3 @@
 
 
 {% endblock %}
-
