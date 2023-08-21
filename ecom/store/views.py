@@ -17,13 +17,29 @@ def view_product(request,id):
     return render(request,'store/view_product.html',{'product_obj':product_obj})
 
 
-def product_decrement(request):
-    print("Hello World!")
-    return HttpResponse("write Your Code ")
+def product_decrement(request,id):
+    cart_data=Cart.objects.all()
+    data=[]
+    for i in cart_data:
+        if (i.user==request.user) and (id==i.product.id):
+            data=i
+    if data.product_quantity==0:
+        return HttpResponse("Not Allow...")        
+    else:
+        data.product_quantity=data.product_quantity-1
+        data.save()
+        return redirect('/cart/')
 
 
-def product_increment(request):
-    return HttpResponse("write your code")
+def product_increment(request,id):
+    cart_data=Cart.objects.all()
+    data=[]
+    for i in cart_data:
+        if (i.user==request.user) and (id==i.product.id):
+            data=i
+    data.product_quantity=data.product_quantity+1
+    data.save()
+    return redirect('/cart/')
 
 def register(request):
     if request.method == 'POST':

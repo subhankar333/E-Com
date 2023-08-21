@@ -30,12 +30,12 @@
             Rating : ☆{{item.product.rating}}
         </div>    
         <div class="font-bold quantity buttons_added" style="display: flex; flex-direction: row;">
-            <form action="/product_decrement/" method="post">
+            <form action="/product_decrement/{{item.product.id}}/" method="post">
                 {% csrf_token %}
                 <button>-</button>
             </form>
             <input type="text" name="quantity" style="text-align: center;" disabled="true" value="{{item.product_quantity}}">
-            <form action="/product_increment/" method="post">
+            <form action="/product_increment/{{item.product.id}}/" method="post">
                 {% csrf_token %}
                 <button>+</button>
             </form>
