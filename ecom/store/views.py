@@ -109,13 +109,10 @@ def remove_from_cart(request):
 
 def checkout(request):
     cartitems = Cart.objects.filter(user=request.user)
-    product_qty = request.GET.get('quantity')
-    # product_qty = int(product_qty)
-    print(product_qty)
     total_price = 0
 
     for item in cartitems:
-        total_price = total_price + item.product.price * product_qty
+        total_price = total_price + item.product.price * item.product_quantity
 
     context = {'cartitems':cartitems, 'total_price': total_price}
     return render(request,'store/checkout.html',context)
