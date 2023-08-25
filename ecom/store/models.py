@@ -7,7 +7,8 @@ class Product(models.Model):
     description = models.CharField(max_length=200)
     rating = models.FloatField()
     price = models.FloatField()
-    image = models.ImageField(upload_to='uploads')
+    image = models.CharField(max_length=10000)
+    # image = models.ImageField(upload_to='uploads')
 
     def __str__(self):
         return self.name
@@ -26,15 +27,11 @@ class Cart(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     product_quantity=models.IntegerField(default=0)
+
     def __str__(self):
         return self.product.name
     
-
-class carti(models.Model):
+class Order(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    product = models.ForeignKey(Product,on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-    
-    def __str__(self):
-        return self.product.name
-
+    cart = models.ForeignKey(Cart,on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)

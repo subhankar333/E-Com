@@ -3,20 +3,25 @@
 {% block body %}
 
 <div class="p-5 flex justify-center items-center shadow-lg">
-    <h1 class="font-bold text-xl justify-center items-center">Your Order Summary</h1>
- </div>
-
- <div class="pt-10 flex-col text-center font-bold">
-    <h2 class="text-xl">Total Price : <span class="text-green-700">{{total_price}}</span></h2>
-    
+  <h1 class="font-bold text-xl justify-center items-center">Your Order Summary</h1>
 </div>
+
+<div class="pt-10 flex-col text-center font-bold">
+  <h2 class="text-xl px-20">Total Amount : <span class="text-green-700">₹{{total_price}}</span></h2> 
+</div>
+
+<div class="m-auto flex items-center justify-center pb-9 pt-9">
+  <a  href="{% url 'order' %}"><button class="bg-green-500 font-bold text-white px-2 py-2 shadow-lg rounded-sm" type="submit">Proceed Order</button></a>
+</div>
+
+
 
 
    {% for item in cartitems %}
 
 
 
-   <div class="product shadow-lg w-1/4 h-auto rounded-lg m-20">
+   <div class="product shadow-lg w-1/6 h-auto rounded-lg m-20">
     <div class="product-image max-w-xl">
         <img src="{{item.product.image}}" alt="">
     </div>
@@ -27,12 +32,15 @@
         <div class="font-semibold">
             {{item.product.description}}
         </div>
-        <div class="text-green-700 font-bold">
-            Price : ₹{{item.product.price}}
+        <div class="font-bold">
+            Price : <span class="font-bold text-green-700">₹{{item.product.price}}</span>
         </div> 
-        <div class="text-green-700 font-bold">
-            Rating : ☆{{item.product.rating}}
+        <div class="font-bold">
+            Rating : <span class="font-bold text-green-700">☆{{item.product.rating}}</span>
         </div>
+        <div class="font-bold">
+          Quantity : <span class="font-bold text-green-700">{{item.product_quantity}}</span>
+      </div>
       </div>
 
       </div>
@@ -47,7 +55,9 @@
 
 
    
-
+   <div class="m-auto flex items-center justify-center pb-9">
+    <a  href="{% url 'order' %}"><button class="bg-green-500 font-bold text-white px-2 py-2 shadow-lg rounded-sm" type="submit">Proceed Order</button></a>
+</div>
 
 
 

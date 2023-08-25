@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Product,Wishlist,Cart,carti
+from .models import Product,Wishlist,Cart,Order
 from .forms import UserRegistrationForm
 from django.http import JsonResponse
 from django.views.generic.base import TemplateView
@@ -21,12 +21,12 @@ def product_decrement(request,id):
     cart_data=Cart.objects.all()
     data=[]
     for i in cart_data:
-        if (i.user==request.user) and (id==i.product.id):
-            data=i
-    if data.product_quantity==0:
-        return HttpResponse("Not Allow...")        
+        if (i.user == request.user) and (id == i.product.id):
+            data = i
+    if data.product_quantity == 0:
+        return HttpResponse("Not Allowed...")        
     else:
-        data.product_quantity=data.product_quantity-1
+        data.product_quantity = data.product_quantity - 1
         data.save()
         return redirect('/cart/')
 
@@ -35,9 +35,9 @@ def product_increment(request,id):
     cart_data=Cart.objects.all()
     data=[]
     for i in cart_data:
-        if (i.user==request.user) and (id==i.product.id):
-            data=i
-    data.product_quantity=data.product_quantity+1
+        if (i.user == request.user) and (id == i.product.id):
+            data = i
+    data.product_quantity = data.product_quantity + 1
     data.save()
     return redirect('/cart/')
 
@@ -109,13 +109,28 @@ def remove_from_cart(request):
 
 def checkout(request):
     cartitems = Cart.objects.filter(user=request.user)
-    product_qty = request.GET.get('quantity')
-    # product_qty = int(product_qty)
-    print(product_qty)
     total_price = 0
 
     for item in cartitems:
-        total_price = total_price + item.product.price * product_qty
+        total_price = total_price + item.product.price * item.product_quantity
 
     context = {'cartitems':cartitems, 'total_price': total_price}
     return render(request,'store/checkout.html',context)
+
+def order(request):
+    cartitems = Cart.objects.filter(user=request.user)
+    total_price = 0
+
+    for item in cartitems:
+        total_price = total_price + item.product.price * item.product_quantity
+
+    context = {'cartitems':cartitems, 'total_price': total_price}
+    return render(request,'store/order.html',{'cartitems':cartitems,'total_price':total_price})
+
+
+def payment(request):
+    if request.method == 'POST':
+        total_payment = request.POST.get('total_payment')
+        cart_items = Cart.objects.filter(user=request.user)
+        # Order.objects.create(user=request.user,cart=cart_items)
+    return render(request,'store/success.html',{})

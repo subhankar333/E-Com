@@ -8,7 +8,7 @@
     {% for product in products %}
    
        <div class="product shadow-lg w-1/2 rounded-lg m-8">
-           <div class="product-image max-w-s h-auto object-contain">
+           <div class="product-image mx-auto lg:rounded-t-md lg:rounded-b-none rounded-md p-1 lg:p-0 ">
                <img src="{{product.image}}" alt="">
            </div>
            <div class="p-5">
@@ -18,11 +18,13 @@
                <div class="font-semibold">
                    {{product.description}}
                </div>
-               <div class="text-green-700 font-bold">
-                   ₹{{product.price}}
+               <div class="font-bold">
+                   Price : 
+                   <span class="font-bold text-green-700">₹{{product.price}}</span>
                </div> 
-                <div class="text-green-700 font-bold">
-                ☆{{product.rating}}
+                <div class="font-bold">
+                    Rating :
+                <span class="font-bold text-green-700">☆{{product.rating}}</span>
               </div>
               <div class="px-7">
                 <a href="{% url 'view_product' product.id %}">
