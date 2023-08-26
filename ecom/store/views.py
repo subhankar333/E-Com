@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Product,Wishlist,Cart,Order
+from .models import Product,Wishlist,Cart,Order,User
 from .forms import UserRegistrationForm
 from django.http import JsonResponse
 from django.views.generic.base import TemplateView
@@ -130,7 +130,16 @@ def order(request):
 
 def payment(request):
     if request.method == 'POST':
-        total_payment = request.POST.get('total_payment')
-        cart_items = Cart.objects.filter(user=request.user)
-        # Order.objects.create(user=request.user,cart=cart_items)
-    return render(request,'store/success.html',{})
+        cartitems = Cart.objects.filter(user=request.user)
+        for i in cartitems:
+            total_price = 0
+            total_price = total_price + i.product.price * i.product_quantity
+            Order.objects.create(user=request.user,Product=Product.objects.get(name=i.product.name),product_quantity=i.product_quantity,total_rupess=total_price)
+    data=Order.objects.filter(user=request.user)
+    return render(request,'store/success.html',{'data':data})
+
+
+
+def Myorder(request):
+    products=Order.objects.filter(user=request.user)
+    return render(request,'store/Myorder.html',{'products':products})

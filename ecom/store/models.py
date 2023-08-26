@@ -33,5 +33,7 @@ class Cart(models.Model):
     
 class Order(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    cart = models.ForeignKey(Cart,on_delete=models.CASCADE)
+    Product = models.ForeignKey(Product,on_delete=models.CASCADE,default=0)
+    product_quantity=models.IntegerField(default=0)
+    total_rupess=models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

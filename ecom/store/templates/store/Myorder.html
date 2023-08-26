@@ -1,0 +1,57 @@
+{% extends 'store/base.html' %}
+
+
+
+
+{% block body %}
+
+
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td,
+    th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>
+
+<table>
+    <tr>
+        <th>Product</th>
+        <th>Total Rupess</th>
+        <th>Quantity</th>
+        <th>Time</th>
+    </tr>
+
+    {% for product in products %}
+    <tr>
+        <td>
+            <img src="{{product.Product.image}}" height="100px" width="100px" alt="">
+        </td>
+        <td>{{product.total_rupess}}</td>
+        <td>
+            <div class="font-bold">
+                Quantity :
+                <span class="font-bold text-green-700">{{product.product_quantity}}</span>
+            </div>
+        </td>
+        <td>{{product.created_at}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+
+
+
+{% endblock %}

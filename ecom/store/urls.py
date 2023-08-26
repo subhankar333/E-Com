@@ -23,6 +23,7 @@ urlpatterns = [
     path('product_increment/<int:id>/',views.product_increment,name='product_increment'),
     path('order/',views.order,name='order'),
     path('payment/',views.payment,name='payment'),
+    path('Myorder/',views.Myorder,name='Myorder'),
 ]
     
 
