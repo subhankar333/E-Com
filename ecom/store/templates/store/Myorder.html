@@ -6,6 +6,8 @@
 {% block body %}
 
 
+
+
 <style>
     table {
         font-family: arial, sans-serif;
@@ -16,39 +18,42 @@
     td,
     th {
         border: 1px solid #dddddd;
-        text-align: left;
+        text-align: center;
         padding: 8px;
     }
 
-    tr:nth-child(even) {
-        background-color: #dddddd;
-    }
 </style>
 
-<table>
-    <tr>
-        <th>Product</th>
-        <th>Total Rupess</th>
-        <th>Quantity</th>
-        <th>Time</th>
-    </tr>
+<h1 class="pt-6 font-bold flex items-center justify-center">Total Ordered Amount : &nbsp; <span class="text-green-500">₹{{total_ordered_amount}}</span></h1>
 
-    {% for product in products %}
-    <tr>
-        <td>
-            <img src="{{product.Product.image}}" height="100px" width="100px" alt="">
-        </td>
-        <td>{{product.total_rupess}}</td>
-        <td>
-            <div class="font-bold">
-                Quantity :
-                <span class="font-bold text-green-700">{{product.product_quantity}}</span>
-            </div>
-        </td>
-        <td>{{product.created_at}}</td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="pt-5">
+    <table class="pt-15">
+        <tr>
+            <th>Product</th>
+            <th class="px-10">Total amount</th>
+            <th>Quantity</th>
+            <th>Time</th>
+        </tr>
+    
+        {% for product in products %}
+        <tr>
+            <td>
+                <div class="flex items-center justify-center">
+                    <img src="{{product.Product.image}}" height="100px" width="100px" alt="">
+                </div>
+            </td>
+            <td class="font-bold text-green-500">₹{{product.total_rupess}}</td>
+            <td>
+                <div class="font-bold">
+                    <span class="font-bold">{{product.product_quantity}}</span>
+                </div>
+            </td>
+            <td>{{product.created_at}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
 
 
 

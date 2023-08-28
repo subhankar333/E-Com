@@ -1,8 +1,18 @@
 {% extends 'store/base.html' %}
 
 {% block body %}
-    <div style="display: flex; justify-content: center; margin-top: 30px;">
-          <h1>Congrats you have successfully ordered.</h1>
-          <a href="/Myorder/"><button style="background-color: rgb(140, 140, 228); border-radius: 10px solid green; margin-left: 10px;">Go To Myorder</button></a>
+    <div class="pt-20" style="display: flex; justify-content: center; margin-top: 30px;">
+          <h1 class="font-bold">Congrats you have successfully ordered 😋</h1>
     </div>
+
+    
+    <div class="flex items-center justify-center pt-6">
+
+        <span class="font-bold">Go to </span>
+        &nbsp;
+        <a href="/Myorder/"><button class="bg-green-500 font-bold text-white px-1 py-1 shadow-lg  rounded-sm" type="submit">My Orders</button></a>
+        <span class="px-1 font-bold">section to see your orders</span>
+
+    </div>
+    
 {% endblock %}

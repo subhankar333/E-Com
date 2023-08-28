@@ -1,22 +1,24 @@
 from django.shortcuts import render,redirect
-from .models import Product,Wishlist,Cart,Order,User
+from .models import Product,Wishlist,Cart,Order,User,Contact
 from .forms import UserRegistrationForm
 from django.http import JsonResponse
 from django.views.generic.base import TemplateView
 from django.http import HttpResponse
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
+@login_required(login_url='login')
 def index(request):
     products = Product.objects.all()
     return render(request,'store/index.html',{'products':products})
 
-
+@login_required(login_url='login')
 def view_product(request,id):
     product_obj = Product.objects.get(id=id)
     return render(request,'store/view_product.html',{'product_obj':product_obj})
 
-
+@login_required(login_url='login')
 def product_decrement(request,id):
     cart_data=Cart.objects.all()
     data=[]
@@ -30,7 +32,7 @@ def product_decrement(request,id):
         data.save()
         return redirect('/cart/')
 
-
+@login_required(login_url='login')
 def product_increment(request,id):
     cart_data=Cart.objects.all()
     data=[]
@@ -51,12 +53,12 @@ def register(request):
     user_form = UserRegistrationForm()
     return render(request,'store/register.html',{'user_form':user_form})
 
-
+@login_required(login_url='login')
 def wishlist(request):
     wish_items = Wishlist.objects.filter(user=request.user)
     return render(request,'store/wishlist.html',{'wish_items':wish_items})
 
-
+@login_required(login_url='login')
 def add_to_wishlist(request):
     if request.method == 'POST':
         product_id = request.POST.get('product_obj-id')
@@ -71,19 +73,19 @@ def add_to_wishlist(request):
         finally:
                return redirect('wishlist')
           
-
+@login_required(login_url='login')
 def remove_from_wishlist(request):
     if request.method == 'POST':
        item_id = request.POST.get('item-id')
        Wishlist.objects.filter(id=item_id).delete()
        return redirect('wishlist')
     
-
+@login_required(login_url='login')
 def cart(request):
     cart_items = Cart.objects.filter(user=request.user)
     return render(request,'store/cart.html',{'cart_items':cart_items})
    
-    
+@login_required(login_url='login')
 def add_to_cart(request):
     if request.method == 'POST':
         product_id = request.POST.get('product-id')
@@ -97,16 +99,16 @@ def add_to_cart(request):
              Cart.objects.create(user=request.user,product=product_item)
     
         finally:
-               return redirect('cart')
+               return redirect('wishlist')
         
-
+@login_required(login_url='login')
 def remove_from_cart(request):
     if request.method == 'POST':
        item_id = request.POST.get('item-id')
        Cart.objects.filter(id=item_id).delete()
        return redirect('cart')
     
-
+@login_required(login_url='login')
 def checkout(request):
     cartitems = Cart.objects.filter(user=request.user)
     total_price = 0
@@ -117,6 +119,7 @@ def checkout(request):
     context = {'cartitems':cartitems, 'total_price': total_price}
     return render(request,'store/checkout.html',context)
 
+@login_required(login_url='login')
 def order(request):
     cartitems = Cart.objects.filter(user=request.user)
     total_price = 0
@@ -124,10 +127,13 @@ def order(request):
     for item in cartitems:
         total_price = total_price + item.product.price * item.product_quantity
 
+    if total_price == 0:
+        return HttpResponse("<h2>Please help yourself and add a product atleast to your cart</h2>")
+
     context = {'cartitems':cartitems, 'total_price': total_price}
     return render(request,'store/order.html',{'cartitems':cartitems,'total_price':total_price})
 
-
+@login_required(login_url='login')
 def payment(request):
     if request.method == 'POST':
         cartitems = Cart.objects.filter(user=request.user)
@@ -135,11 +141,26 @@ def payment(request):
             total_price = 0
             total_price = total_price + i.product.price * i.product_quantity
             Order.objects.create(user=request.user,Product=Product.objects.get(name=i.product.name),product_quantity=i.product_quantity,total_rupess=total_price)
+    Cart.objects.all().delete()
     data=Order.objects.filter(user=request.user)
     return render(request,'store/success.html',{'data':data})
 
 
-
+@login_required(login_url='login')
 def Myorder(request):
     products=Order.objects.filter(user=request.user)
-    return render(request,'store/Myorder.html',{'products':products})
+    total_ordered_amount = 0
+    for items in products:
+        total_ordered_amount += items.total_rupess
+    return render(request,'store/Myorder.html',{'products':products,'total_ordered_amount':total_ordered_amount})
+
+@login_required(login_url='login')
+def contact(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        print(name,email,message)
+        Contact.objects.create(name=name,email=email,message=message)
+        return HttpResponse('<h2>Successfully Sent The Message!</h2>')
+    return render(request,'store/contact.html')

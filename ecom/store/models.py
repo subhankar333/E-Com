@@ -26,7 +26,7 @@ class Wishlist(models.Model):
 class Cart(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
-    product_quantity=models.IntegerField(default=0)
+    product_quantity=models.IntegerField(default=1)
 
     def __str__(self):
         return self.product.name
@@ -37,3 +37,12 @@ class Order(models.Model):
     product_quantity=models.IntegerField(default=0)
     total_rupess=models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.name
